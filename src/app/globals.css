@@ -1,26 +1,36 @@
-@import "tailwindcss";
-
+/* Variables de color */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
+/* Estilos globales */
+html, body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;        /* asegura que ocupe toda la altura */
+  box-sizing: border-box;    /* evita problemas con padding y width */
+  overflow-x: hidden;        /* mantiene sin scroll lateral */
+  overscroll-behavior: none; /* bloquea rebote en móviles */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+/* Reset y layout para todos los elementos */
+*, *::before, *::after {
+  box-sizing: inherit;
 }

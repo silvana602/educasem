@@ -1,0 +1,66 @@
+/* Why Study Section */
+.question-section {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 2rem;
+  margin: 0 auto;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 6rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.question-content {
+  flex: 1;
+}
+
+.section-question-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 2rem;
+}
+
+.question-image {
+  flex: 1;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.benefit-icon {
+  background: #48bb78;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.benefit-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #4a5568;
+  margin: 0;
+}
