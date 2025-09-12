@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { geistSans, geistMono } from "@/config/fonts";
 import "./globals.css";
+import { Provider } from "@/components";
 
 export const metadata: Metadata = {
   title: "Educasem",
@@ -13,12 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-      </body>
+        <Provider>{children}</Provider>      </body>
     </html>
   );
 }
