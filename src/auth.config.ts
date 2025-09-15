@@ -1,49 +1,50 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import bcryptjs from "bcryptjs";
-import { z } from "zod";
-
-import { prisma } from "@/lib/prisma"; // asegúrate de usar la ruta correcta
+import NextAuth, { type NextAuthOptions } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import bcryptjs from 'bcryptjs';
+import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
 
 export const authConfig: NextAuthOptions = {
   pages: {
-    signIn: "/auth/login",
-    newUser: "/auth/new-account",
+    signIn: '/auth/login',
+    newUser: '/auth/new-account',
   },
-
   providers: [
     Credentials({
-      // 👇 aquí defines qué campos esperas del form
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const parsedCredentials = z
+        if (!credentials) return null;
+
+        const parsed = z
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
 
-        if (!parsedCredentials.success) return null;
+        if (!parsed.success) return null;
 
-        const { email, password } = parsedCredentials.data;
+        const { email, password } = parsed.data;
 
-        // Buscar usuario en DB
         const user = await prisma.user.findUnique({
           where: { email: email.toLowerCase() },
         });
         if (!user) return null;
 
-        // Validar password
         const isValid = bcryptjs.compareSync(password, user.password);
         if (!isValid) return null;
 
-        // Retornar usuario sin el password
-        const { password: _pw, ...rest } = user;
-
+        const { password: _, ...rest } = user;
         return rest;
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
+  debug: process.env.NODE_ENV === 'development',
 };
 
-export const { signIn, signOut, auth, handlers } = NextAuth(authConfig);
+// Export de NextAuth como default
+export default NextAuth(authConfig);

@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import "@/styles/styles.components/topmenu.css";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export const TopMenu = () => {
-  // const { data: session } = useSession();
-  // console.log({ session });
+  const { data: session } = useSession();
+  console.log({ session });
 
-  // const isAuthenticated = !!session?.user;
+  const isAuthenticated = !!session?.user;
 
   return (
     <nav className="navigation">
@@ -38,7 +38,7 @@ export const TopMenu = () => {
       </div>
 
       {/* Botones de Login y Signup */}
-      <div className="btn-sesionr">
+      {/* <div className="btn-sesionr">
         <Link href={"/auth/login"} className="btn-login">
           Inisiar Sesion
         </Link>
@@ -46,12 +46,12 @@ export const TopMenu = () => {
         <Link href={"/auth/register"} className="btn-signup">
           Registrarse
         </Link>
-      </div>
+      </div> */}
 
-      {/* MOSTRAR BOTONES SI NO ESTA AUTENTICADO
+      {/* MOSTRAR BOTONES SI NO ESTA AUTENTICADO */}
       {!isAuthenticated && (
         <>
-          {/* Botones de Login y Signup 
+          {/* Botones de Login y Signup */}
           <div className="btn-sesionr">
             <Link href={"/auth/login"} className="btn-login">
               Inisiar Sesion
@@ -62,7 +62,7 @@ export const TopMenu = () => {
             </Link>
           </div>
         </>
-      )} */}
+      )}
     </nav>
   );
 };

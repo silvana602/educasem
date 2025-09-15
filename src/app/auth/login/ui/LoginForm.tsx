@@ -1,21 +1,22 @@
 'use client'
 
-// import { authenticate } from "@/actions"
+import { authenticate } from "@/actions"
+import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
-// import { useFormState } from "react-dom"
+import { useFormStatus } from "react-dom"
+import { useActionState } from 'react';
 
 export const LoginForm = () => {
 
-  // const [state, dispatch] = useFormState(authenticate, undefined);
+  const [state, dispatch] = useActionState(authenticate, undefined)
 
-  // console.log({state});
+  console.log({state});
   
 
   return (
     <>
-      <form>
-      {/* <form action={ dispatch }> */}
+      <form action={ dispatch }>
         {/* Correo */}
         <input
           type="email"
@@ -45,9 +46,10 @@ export const LoginForm = () => {
         </div>
 
         {/* Botón login */}
-        <button type="submit" className="login-btn">
+        {/* <button type="submit" className="login-btn">
           Iniciar Sesión
-        </button>
+        </button> */}
+        <LoginButton />
 
         {/* Separador */}
         <div className="divider">
@@ -76,4 +78,21 @@ export const LoginForm = () => {
       </p>
     </>
   )
+}
+
+function LoginButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button 
+      type="submit" 
+      className={ clsx({
+        "btn-primary": !pending,
+        "btn-disabled": pending
+      })}
+      disabled={ pending }
+      >
+      Ingresar
+    </button>
+  );
 }

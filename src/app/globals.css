@@ -34,3 +34,57 @@ footer {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+
+
+.btn-primary {
+  background-color: #2563eb; /* bg-blue-600 */
+  color: #ffffff;           /* text-white */
+  padding-top: 0.5rem;      /* py-2 */
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;       /* px-4 */
+  padding-right: 1rem;
+  border-radius: 0.25rem;   /* rounded */
+  transition: all 0.2s ease-in-out; /* transition-all */
+}
+.btn-primary:hover {
+  background-color: #1e40af; /* hover:bg-blue-800 */
+}
+
+.btn-secondary {
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: #000000;           /* text-black */
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease-in-out;
+}
+.btn-secondary:hover {
+  background-color: #d1d5db; /* hover:bg-gray-300 */
+}
+
+.btn-disabled {
+  background-color: #4b5563; /* bg-gray-600 */
+  color: #ffffff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-danger {
+  background-color: #ef4444; /* bg-red-500 */
+  color: #ffffff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease-in-out;
+}
+.btn-danger:hover {
+  background-color: #b91c1c; /* hover:bg-red-700 */
+}
