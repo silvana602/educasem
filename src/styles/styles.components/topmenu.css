@@ -33,7 +33,7 @@
   align-items: right;
 }
 
-.btn-login, .btn-signup {
+.btn-login, .btn-signup, .btn-exit {
   border-radius: 0.375rem;
   padding: 10px 25px;
   margin: 0 10px;
@@ -47,10 +47,15 @@
   background-color: blue;
 }
 
+.btn-exit {
+  background-color: pink;
+}
+
 .navigation a,
 .option-menu,
 .btn-login,
-.btn-signup {
+.btn-signup,
+.btn-exit {
   text-decoration: none !important; /* fuerza que no haya subrayado */
   color: inherit;
 }

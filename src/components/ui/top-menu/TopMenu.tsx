@@ -3,6 +3,7 @@
 import Link from "next/link";
 import "@/styles/styles.components/topmenu.css";
 import { useSession } from "next-auth/react";
+import { logout } from "@/actions";
 
 export const TopMenu = () => {
   const { data: session } = useSession();
@@ -37,21 +38,9 @@ export const TopMenu = () => {
         </Link>
       </div>
 
-      {/* Botones de Login y Signup */}
-      {/* <div className="btn-sesionr">
-        <Link href={"/auth/login"} className="btn-login">
-          Inisiar Sesion
-        </Link>
-
-        <Link href={"/auth/register"} className="btn-signup">
-          Registrarse
-        </Link>
-      </div> */}
-
-      {/* MOSTRAR BOTONES SI NO ESTA AUTENTICADO */}
+      {/* MOSTRAR BOTONES SI NO ESTA AUTENTICADO | LOGIN & SIGNUP */}
       {!isAuthenticated && (
         <>
-          {/* Botones de Login y Signup */}
           <div className="btn-sesionr">
             <Link href={"/auth/login"} className="btn-login">
               Inisiar Sesion
@@ -60,8 +49,23 @@ export const TopMenu = () => {
             <Link href={"/auth/register"} className="btn-signup">
               Registrarse
             </Link>
+            {/* MODIFICAR */}
+            <Link href={"/"} className="btn-exit">
+            Salir
+          </Link>
           </div>
         </>
+      )}
+
+      {/* MOSTRAR BOTON SI ESTA AUTENTICADO | EXIT */}
+      {isAuthenticated && (
+        <div 
+        className="btn-sesion"
+        onClick={ logout }>
+          <Link href={"/"} className="btn-exit">
+            Salir
+          </Link>
+        </div>
       )}
     </nav>
   );

@@ -1,22 +1,64 @@
 'use client'
 
-import { authenticate } from "@/actions"
+import { signIn } from 'next-auth/react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
-import { useFormStatus } from "react-dom"
-import { useActionState } from 'react';
 
 export const LoginForm = () => {
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
-  const [state, dispatch] = useActionState(authenticate, undefined)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
 
-  console.log({state});
-  
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+
+    if (!email || !password) {
+      setError('Por favor, completa todos los campos')
+      setLoading(false)
+      return
+    }
+
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      })
+
+      console.log('SignIn result:', result)
+
+      if (result?.error) {
+        setError('Credenciales inválidas')
+      } else if (result?.ok) {
+        router.push('/dashboard')
+        router.refresh()
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      setError('Error en el servidor')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
-      <form action={ dispatch }>
+      <form onSubmit={handleSubmit}>
+        {error && (
+          <div className="error mb-4 p-3 bg-red-50 border border-red-300 rounded text-red-700">
+            {error}
+          </div>
+        )}
+
         {/* Correo */}
         <input
           type="email"
@@ -24,6 +66,7 @@ export const LoginForm = () => {
           className="input-field"
           name="email"
           required
+          disabled={loading}
         />
 
         {/* Contraseña */}
@@ -33,6 +76,7 @@ export const LoginForm = () => {
           className="input-field"
           name="password"
           required
+          disabled={loading}
         />
 
         {/* Opciones */}
@@ -46,10 +90,7 @@ export const LoginForm = () => {
         </div>
 
         {/* Botón login */}
-        {/* <button type="submit" className="login-btn">
-          Iniciar Sesión
-        </button> */}
-        <LoginButton />
+        <LoginButton loading={loading} />
 
         {/* Separador */}
         <div className="divider">
@@ -57,7 +98,7 @@ export const LoginForm = () => {
         </div>
 
         {/* Botón Google */}
-        <button type="button" className="google-btn">
+        <button type="button" className="google-btn" disabled={loading}>
           <Image
             src="/google-icon.svg"
             alt="Google"
@@ -80,19 +121,17 @@ export const LoginForm = () => {
   )
 }
 
-function LoginButton() {
-  const { pending } = useFormStatus();
-
+function LoginButton({ loading }: { loading: boolean }) {
   return (
     <button 
       type="submit" 
-      className={ clsx({
-        "btn-primary": !pending,
-        "btn-disabled": pending
+      className={clsx({
+        "btn btn-primary": !loading,
+        "btn btn-disabled": loading
       })}
-      disabled={ pending }
-      >
-      Ingresar
+      disabled={loading}
+    >
+      {loading ? 'Cargando...' : 'Ingresar'}
     </button>
   );
 }
