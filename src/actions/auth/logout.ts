@@ -1,7 +1,4 @@
-"use server";
+// logout.ts (no es server action)
+import { signOut } from "next-auth/react";
 
-import { signOut } from '@/auth.config';
-
-export const logout = async () => {
-  await signOut();
-};
+export const logout = () => signOut({ callbackUrl: "/" });

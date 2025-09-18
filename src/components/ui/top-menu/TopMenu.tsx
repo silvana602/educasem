@@ -49,10 +49,6 @@ export const TopMenu = () => {
             <Link href={"/auth/register"} className="btn-signup">
               Registrarse
             </Link>
-            {/* MODIFICAR */}
-            <Link href={"/"} className="btn-exit">
-            Salir
-          </Link>
           </div>
         </>
       )}

@@ -45,11 +45,11 @@ export const authConfig: NextAuthOptions = {
         console.log('🔑 Password recibido:', password);
 
         // Validar password
-        // const isValid = bcryptjs.compareSync(password, user.password);
-        const isValid = 12312312
+        const isValid = bcryptjs.compareSync(password, user.password);
+        // const isValid = 12312312
         console.log('🔐 Comparación de password:', isValid);
 
-        // if (!isValid) {
+        if (!isValid) {
           console.log('❌ Password inválido');
           return null;
         }
