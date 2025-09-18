@@ -11,6 +11,15 @@ export const TopMenu = () => {
 
   const isAuthenticated = !!session?.user;
 
+  const isRole = session?.user.role;
+  if (isRole === "admin") {
+    console.log({ isRole });
+  } else if (isRole === "tutor") {
+    console.log({ isRole });
+  } else {
+    console.log({ isRole });
+  }
+
   return (
     <nav className="navigation">
       <div className="logo-box">
@@ -55,9 +64,7 @@ export const TopMenu = () => {
 
       {/* MOSTRAR BOTON SI ESTA AUTENTICADO | EXIT */}
       {isAuthenticated && (
-        <div 
-        className="btn-sesion"
-        onClick={ logout }>
+        <div className="btn-sesion" onClick={logout}>
           <Link href={"/"} className="btn-exit">
             Salir
           </Link>

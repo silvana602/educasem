@@ -118,6 +118,16 @@ input[type="checkbox"] {
   accent-color: #2563eb; /* azul tailwind (blue-600) */
 }
 
+.msg-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #dc2626;
+}
+
 /* Botón login */
 /* .login-btn {
   width: 100%;

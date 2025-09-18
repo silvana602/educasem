@@ -25,7 +25,8 @@ export async function authenticate(
 
     // Si el result indica éxito, redirigir
     if (result && !result.error) {
-      redirect("/dashboard");
+      window.location.replace("/dashboard");
+      // redirect("/dashboard");
     } else {
       return 'Credenciales inválidas';
     }

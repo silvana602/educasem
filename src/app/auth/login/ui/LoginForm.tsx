@@ -1,64 +1,68 @@
-'use client'
+"use client";
 
-import { signIn } from 'next-auth/react'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import clsx from "clsx"
-import Image from "next/image"
-import Link from "next/link"
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import clsx from "clsx";
+import Link from "next/link";
+import { IoLogoGoogle, IoAlertCircleOutline } from "react-icons/io5";
+import { useRememberMe } from "@/hooks/useRememberMe";
 
 export const LoginForm = () => {
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const { rememberMe, savedEmail, toggleRememberMe, saveEmail } = useRememberMe();
+  
+  // Usar el email guardado como valor inicial
+  const [email, setEmail] = useState(savedEmail);
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    const formData = new FormData(e.currentTarget)
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
-
+    // Usar los valores del estado, no del FormData
     if (!email || !password) {
-      setError('Por favor, completa todos los campos')
-      setLoading(false)
-      return
+      setError("Por favor, completa todos los campos");
+      setLoading(false);
+      return;
     }
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         email,
         password,
         redirect: false,
-      })
+      });
 
-      console.log('SignIn result:', result)
+      console.log("SignIn result:", result);
 
       if (result?.error) {
-        setError('Credenciales inválidas')
+        setError("Credenciales inválidas");
       } else if (result?.ok) {
-        router.push('/dashboard')
-        router.refresh()
+        // Guardar email SOLO si la autenticación es exitosa Y "Recordarme" está activado
+        if (rememberMe) {
+          saveEmail(email);
+        }
+        
+        // router.push("/dashboard");
+        window.location.replace('/dashboard')
+        router.refresh();
       }
     } catch (error) {
-      console.error('Login error:', error)
-      setError('Error en el servidor')
+      console.error("Login error:", error);
+      setError("Error en el servidor");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        {error && (
-          <div className="error mb-4 p-3 bg-red-50 border border-red-300 rounded text-red-700">
-            {error}
-          </div>
-        )}
-
         {/* Correo */}
         <input
           type="email"
@@ -67,6 +71,9 @@ export const LoginForm = () => {
           name="email"
           required
           disabled={loading}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email" // Ayuda al navegador a recordar
         />
 
         {/* Contraseña */}
@@ -77,17 +84,33 @@ export const LoginForm = () => {
           name="password"
           required
           disabled={loading}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password" // Ayuda al navegador a recordar
         />
 
         {/* Opciones */}
         <div className="form-options">
           <label className="remember-me">
-            <input type="checkbox" /> Recordarme
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={toggleRememberMe}
+            />{" "}
+            Recordarme
           </label>
           <a href="/forgot-password" className="forgot-link">
             ¿Olvidó su contraseña?
           </a>
         </div>
+
+        {/* Error message */}
+        {error && (
+          <div className="msg-error">
+            <IoAlertCircleOutline />
+            <span>{error}</span>
+          </div>
+        )}
 
         {/* Botón login */}
         <LoginButton loading={loading} />
@@ -99,13 +122,7 @@ export const LoginForm = () => {
 
         {/* Botón Google */}
         <button type="button" className="google-btn" disabled={loading}>
-          <Image
-            src="/google-icon.svg"
-            alt="Google"
-            width={20}
-            height={20}
-            className="google-icon"
-          />
+          <IoLogoGoogle />
           Google
         </button>
       </form>
@@ -118,20 +135,20 @@ export const LoginForm = () => {
         </Link>
       </p>
     </>
-  )
-}
+  );
+};
 
 function LoginButton({ loading }: { loading: boolean }) {
   return (
-    <button 
-      type="submit" 
+    <button
+      type="submit"
       className={clsx({
         "btn btn-primary": !loading,
-        "btn btn-disabled": loading
+        "btn btn-disabled": loading,
       })}
       disabled={loading}
     >
-      {loading ? 'Cargando...' : 'Ingresar'}
+      {loading ? "Cargando..." : "Ingresar"}
     </button>
   );
 }
